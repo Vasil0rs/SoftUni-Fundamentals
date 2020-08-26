@@ -1,0 +1,61 @@
+
+import java.util.HashMap;
+import java.util.Scanner;
+public class MapSoftuniExamresult {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        HashMap<String, Integer> users = new HashMap<>();
+        HashMap<String, Integer> languages = new HashMap<>();
+        String input = scanner.nextLine();
+
+        while (!input.equals("exam finished")) {
+            String[] tokens = input.split("-");
+            String userName = tokens[0];
+            String language = tokens[1];
+
+            if (language.equals("banned")) {
+                users.remove(userName);
+                input = scanner.nextLine();
+                continue;
+            }
+
+            int currentPoints = Integer.parseInt(tokens[2]);
+
+            users.putIfAbsent(userName, 0);
+            int points = users.get(userName);
+            if (points < currentPoints) {
+                users.put(userName, currentPoints);
+            }
+
+            languages.putIfAbsent(language, 0);
+            int count = languages.get(language) + 1;
+            languages.put(language, count);
+
+            input = scanner.nextLine();
+        }
+        System.out.println("Results:");
+
+        users.entrySet().stream()
+                .sorted((f, s) -> {
+                    int result = s.getValue().compareTo(f.getValue());
+                    if (result == 0) {
+                        result = f.getKey().compareTo(s.getKey());
+                    }
+                    return result;
+                })
+                .forEach(entry -> System.out.printf("%s | %d%n", entry.getKey(), entry.getValue()));
+
+        System.out.println("Submissions:");
+
+        languages.entrySet().stream()
+                .sorted((f, s) -> {
+                    int result = s.getValue().compareTo(f.getValue());
+                    if (result == 0) {
+                        result = f.getKey().compareTo(s.getKey());
+                    }
+                    return result;
+                })
+                .forEach(entry -> System.out.printf("%s - %d%n", entry.getKey(), entry.getValue()));
+    }
+}
