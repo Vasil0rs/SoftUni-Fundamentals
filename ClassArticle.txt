@@ -1,0 +1,63 @@
+package src;
+
+import java.util.Scanner;
+
+public class ClassArticle {
+    public static class Article {
+        String Title;
+        String Content;
+        String Author;
+
+        public void setTitle(String title) {
+            Title = title;
+        }
+
+        public void setContent(String content) {
+            Content = content;
+        }
+
+        public void setAuthor(String author) {
+            Author = author;
+        }
+
+        public Article(String title, String content, String author) {
+            Title = title;
+            Content = content;
+            Author = author;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("%s - %s: %s", this.Title, this.Content, this.Author);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        String[] input = scanner.nextLine().split(", ");
+
+        String title = input[0];
+        String content = input[1];
+        String author = input[2];
+        Article article = new Article(title, content, author);
+
+        int num = Integer.parseInt(scanner.nextLine());
+
+        for (int i = 0; i < num; i++) {
+            String[] tokens = scanner.nextLine().split(": ");
+
+            String command = tokens[0];
+            String parameter = tokens[1];
+
+            if ("Edit".equals(command)) {
+                article.setContent(parameter);
+            } else if ("ChangeAuthor".equals(command)) {
+                article.setAuthor(parameter);
+            } else if ("Rename".equals(command)) {
+                article.setTitle(parameter);
+            }
+        }
+        System.out.println(article);
+    }
+}
