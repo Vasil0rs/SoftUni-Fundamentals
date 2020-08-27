@@ -1,0 +1,51 @@
+package src;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class ClassArticleTwo {
+    public static class Article {
+        String Title;
+        String Content;
+        String Author;
+
+        public Article(String title, String content, String author) {
+            this.Title = title;
+            this.Content = content;
+            this.Author = author;
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int num = Integer.parseInt(scanner.nextLine());
+        List<Article> listOfArticles = new ArrayList<>();
+
+
+        while (num-- > 0) {
+            String[] tokens = scanner.nextLine().split(", ");
+
+            String title = tokens[0];
+            String content = tokens[1];
+            String author = tokens[2];
+
+            Article article = new Article(title, content, author);
+            listOfArticles.add(article);
+        }
+        String input = scanner.nextLine();
+
+        if ("title".equals(input)) {
+            listOfArticles.sort((a, b) -> a.Title.compareTo(b.Title));
+        } else if ("content".equals(input)) {
+            listOfArticles.sort((a, b) -> a.Content.compareTo(b.Content));
+        } else {
+            listOfArticles.sort((a, b) -> a.Author.compareTo(b.Author));
+        }
+        for (Article listOfArticle : listOfArticles) {
+            System.out.printf("%s - %s: %s%n", listOfArticle.Title, listOfArticle.Content, listOfArticle.Author);
+        }
+
+    }
+}
