@@ -1,0 +1,78 @@
+package src;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class BattleManager {
+
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        HashMap<String, Integer> nameHealth = new HashMap<>();
+        HashMap<String, Integer> nameEnergy = new HashMap<>();
+
+        String command = scanner.nextLine();
+
+        while (!command.equals("Results")) {
+            String realCommand = command.split(":")[0];
+
+            if (realCommand.equals("Add")) {
+                String personName = command.split(":")[1];
+                int health = Integer.parseInt(command.split(":")[2]);
+                int energy = Integer.parseInt(command.split(":")[3]);
+
+                if (!nameHealth.containsKey(personName)) {
+                    nameHealth.put(personName, health);
+                    nameEnergy.put(personName, energy);
+                } else {
+                    nameHealth.put(personName, nameHealth.get(personName) + health);
+                }
+            }
+
+            if (realCommand.equals("Attack")) {
+                String attackerName = command.split(":")[1];
+                String defenderName = command.split(":")[2];
+                int damage = Integer.parseInt(command.split(":")[3]);
+
+                if (nameHealth.containsKey(attackerName) && nameHealth.containsKey(defenderName)) {
+                    nameHealth.put(defenderName, nameHealth.get(defenderName) - damage);
+                    nameEnergy.put(attackerName, nameEnergy.get(attackerName) - 1);
+
+                    if (nameHealth.get(defenderName) <= 0) {
+                        nameHealth.remove(defenderName);
+                        System.out.println(String.format("%s was disqualified!", defenderName));
+                    }
+                    if (nameEnergy.get(attackerName) <= 0) {
+                        nameEnergy.remove(attackerName);
+                        nameHealth.remove(attackerName);
+                        System.out.println(String.format("%s was disqualified!", attackerName));
+                    }
+                }
+            }
+
+            if (realCommand.equals("Delete")) {
+                String userName = command.split(":")[1];
+                if (userName.equals("All")) {
+                    nameEnergy.clear();
+                    nameHealth.clear();
+                } else {
+                    nameEnergy.remove(userName);
+                    nameHealth.remove(userName);
+                }
+            }
+
+            command = scanner.nextLine();
+        }
+
+        System.out.println(String.format("People count: %d", nameHealth.size()));
+
+        nameHealth.entrySet().stream().sorted(Map.Entry.<String, Integer>comparingByValue()
+                .reversed().thenComparing(Map.Entry::getKey))
+                .forEach(entry -> {
+                    int energy = nameEnergy.get(entry.getKey());
+                    System.out.println(String.format("%s - %d - %d", entry.getKey(), entry.getValue(), energy));
+                });
+    }
+}
