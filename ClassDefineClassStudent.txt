@@ -1,0 +1,93 @@
+package src;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class ClassDefineClassStudent {
+
+    static class Student {
+
+        private String firstname;
+        private String secondname;
+        private int age;
+        private String hometown;
+
+        public Student(String firstname, String secondname, int age, String hometown) {
+
+            this.firstname = firstname;
+            this.secondname = secondname;
+            this.age = age;
+            this.hometown = hometown;
+        }
+
+        public String getFirstname() {
+            return firstname;
+        }
+
+        public String getSecondname() {
+            return secondname;
+        }
+
+        public String getHomeTown() {
+            return hometown;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public void setAge(int age) {
+            this.age = age;
+        }
+
+        public void setHomeTown(String hometown) {
+            this.hometown = hometown;
+        }
+    }
+
+    static Student findStudent(String firstName, String lastName, List<Student> students) {
+        for (Student student : students) {
+            if (student.getFirstname().equals(firstName)
+                    && student.getSecondname().equals(lastName)) {
+                return student;
+            }
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        List<Student> students = new ArrayList<>();
+
+        String input = scanner.next();
+
+        while (!input.equals("end")) {
+
+            String firstname = input;
+            String secondname = scanner.next();
+            int age = scanner.nextInt();
+            String hometown = scanner.next();
+
+            Student existingStudent = findStudent(firstname, secondname, students);
+            if (existingStudent != null) {
+                existingStudent.setAge(age);
+                existingStudent.setHomeTown(hometown);
+            } else {
+                Student student = new Student(firstname, secondname, age, hometown);
+                students.add(student);
+
+            }
+            input = scanner.next();
+        }
+        String cityName = scanner.next();
+        for (Student student : students) {
+            if (student.getHomeTown().equals(cityName)) {
+                System.out.printf("%s %s is %d years old.",
+                        student.getFirstname(), student.getSecondname(), student.getAge());
+            }
+        }
+
+    }
+}
