@@ -1,0 +1,37 @@
+package src;
+
+import java.util.*;
+
+public class CompanyUsers {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        Map<String, List<String>> companyList = new LinkedHashMap<>();
+        String input = scanner.nextLine();
+
+        while (!"End".equals(input)) {
+            String[] tokens = input.split(" -> ");
+            String companyName = tokens[0];
+            String employee = tokens[1];
+
+            companyList.putIfAbsent(companyName, new LinkedList<>());
+            List<String> list = companyList.get(companyName);
+
+            if (!list.contains(employee)) {
+                list.add(employee);
+            }
+
+            input = scanner.nextLine();
+        }
+        companyList.entrySet()
+                .stream()
+                .sorted((c1, c2) -> c1.getKey().compareTo(c2.getKey()))
+                .forEach(e -> {
+                    System.out.println(e.getKey());
+                    e.getValue().forEach(
+                            id -> System.out.println(String.format("-- %s", id)));
+                });
+
+
+    }
+}
