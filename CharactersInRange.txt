@@ -1,0 +1,20 @@
+package src;
+
+import java.util.Scanner;
+
+public class CharactersInRange {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        char char1 = scanner.nextLine().charAt(0);
+        char char2 = scanner.nextLine().charAt(0);
+        getAllchars(char1, char2);
+    }
+
+    static void getAllchars(char char1, char char2) {
+        int capital1= Math.min(char1,char2);
+        int capital2= Math.max(char1,char2);
+        for (int i = capital1 + 1; i < capital2; i++) {
+            System.out.print((char) i + " ");
+        }
+    }
+}
