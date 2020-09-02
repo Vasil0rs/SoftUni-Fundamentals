@@ -1,0 +1,54 @@
+package src;
+import java.util.*;
+
+public class SoftuniExamResult {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        String input = scanner.nextLine();
+        Map<String, List<String>> counts = new LinkedHashMap<>();
+        Map<String, Integer> students = new LinkedHashMap<>();
+
+        while (!"exam finished".equals(input)) {
+
+            String[] tokens = input.split("-");
+            String userName = tokens[0];
+            String language = tokens[1];
+
+            if (language.equals("banned")) {
+                students.remove(userName);
+                input = scanner.nextLine();
+                continue;
+            }
+
+            counts.putIfAbsent(language, new ArrayList<>());
+            counts.get(language).add(userName);
+
+            int points = Integer.parseInt(tokens[2]);
+            if (!students.containsKey(userName)) {
+                students.put(userName, points);
+            } else {
+                int point = students.get(userName);
+                if (point < points) {
+                    students.put(userName, points);
+                }
+            }
+
+            input = scanner.nextLine();
+        }
+        System.out.println("Results:");
+        students.entrySet().stream()
+                .sorted((a, b) -> {
+                    int num = Integer.compare(b.getValue(), a.getValue());
+                    if (num == 0) {
+                        num = a.getKey().compareTo(b.getKey());
+                    }
+                    return num;
+                })
+                .forEach(e -> System.out.println(String.format("%s | %d", e.getKey(), e.getValue())));
+        System.out.println("Submissions:");
+        counts.entrySet().stream()
+                .sorted((a, b) -> a.getKey().compareTo(b.getKey()))
+                .forEach(e -> System.out.println(String.format("%s - %s", e.getKey(), e.getValue().size())));
+    }
+}
