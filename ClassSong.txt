@@ -1,0 +1,77 @@
+package src;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class ClassSong {
+
+    static class Song {
+        String typeList;
+
+        public void setTypeList(String typeList) {
+            this.typeList = typeList;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setTime(String time) {
+            this.time = time;
+        }
+
+        public String getTypeList() {
+            return typeList;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getTime() {
+            return time;
+        }
+
+        String name;
+        String time;
+
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int n = Integer.parseInt(scanner.nextLine());
+
+        List<Song> songName = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+
+            String[] data = scanner.nextLine().split("_");
+            String type = data[0];
+            String name = data[1];
+            String time = data[2];
+
+            Song songs = new Song();
+
+            songs.setTypeList(type);
+            songs.setName(name);
+            songs.setTime(time);
+
+            songName.add(songs);
+        }
+        String typeList = scanner.nextLine();
+
+        if (typeList.equals("all")) {
+            for (Song song : songName) {
+                System.out.println(song.getName());
+            }
+        } else {
+            for (Song song : songName) {
+                if (song.getTypeList().equals(typeList)) {
+                    System.out.println(song.getName());
+                }
+            }
+        }
+    }
+}
