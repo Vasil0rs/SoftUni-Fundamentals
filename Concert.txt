@@ -1,0 +1,96 @@
+package src;
+
+import java.util.*;
+
+public class Concert {
+
+    static class band {
+
+        private String name;
+        private int time;
+        List<String> members = new ArrayList<>();
+
+        public band(String name) {
+            this.name = name;
+        }
+
+        public int getTime() {
+            return time;
+        }
+
+        public void play(int Time) {
+            this.time += Time;
+        }
+
+        public void add(String member) {
+            if (!members.contains(member)) {
+                this.members.add(member);
+            }
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public List<String> getMembers() {
+            return members;
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        Map<String, band> bandByName = new HashMap<>();
+
+        String command = scanner.nextLine();
+        while (!command.equals("start of concert")) {
+            String[] comBandParr = command.split("; ");
+
+            String bandName = comBandParr[1];
+            band band = bandByName.get(bandName);
+            if (band == null) {
+                band = new band(bandName);
+                bandByName.put(bandName, band);
+            }
+            if (comBandParr[0].equals("Play")) {
+                int playTime = Integer.parseInt(comBandParr[2]);
+                band.play(playTime);
+
+            } else if (comBandParr[0].equals("Add")) {
+                String[] members = comBandParr[2].split(", ");
+
+                for (String member : members) {
+                    band.add(member);
+                }
+            } else {
+                throw new IllegalStateException("unknown command" + comBandParr[0]);
+            }
+            command = scanner.nextLine();
+        }
+        int totalTime = 0;
+        List<band> values = new ArrayList<>(bandByName.values());
+        Collections.sort(values, (a, b) -> {
+            int timeCompare = Integer.compare(b.getTime(), a.getTime());
+            if (timeCompare == 0) {
+                return a.getName().compareTo(b.getName());
+            }else {
+                return timeCompare;
+            }
+        });
+
+        for (band band : values) {
+            totalTime += band.getTime();
+        }
+        System.out.println("Total time: " + totalTime);
+
+        for (band band : values) {
+            System.out.println(band.getName() + " -> " + band.getTime());
+        }
+        String bandToPrint = scanner.nextLine();
+        System.out.println(bandToPrint);
+        band band = bandByName.get(bandToPrint);
+        for (String member : band.getMembers()) {
+            System.out.println("=> " + member);
+        }
+    }
+}
