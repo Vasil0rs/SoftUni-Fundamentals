@@ -1,0 +1,31 @@
+package src;
+
+import java.util.Scanner;
+
+public class DataTypesMethods {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+
+        if (input.equals("int")) {
+            int number = Integer.parseInt(scanner.nextLine());
+            printResult(number);
+        } else if (input.equals("real")) {
+            double number = Double.parseDouble(scanner.nextLine());
+
+            printDoubleResult(number);
+            ;
+        } else if (input.equals("string")) {
+            String token = scanner.nextLine();
+            System.out.println("$" + token + "$");
+        }
+    }
+
+    private static void printDoubleResult(double total) {
+        System.out.printf("%.2f",total* 1.5);
+    }
+
+    private static void printResult(int number) {
+        System.out.println(number * 2);
+    }
+}
