@@ -1,0 +1,36 @@
+package src;
+
+import java.util.Scanner;
+
+public class EqualSumArray {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        String[] input = scanner.nextLine().split(" ");
+        int[] numbers = new int[input.length];
+
+        String emptyInput = "no";
+
+        for (int i = 0; i < input.length; i++) {
+            numbers[i] = Integer.parseInt(input[i]);
+        }
+
+        for (int i = 0; i < numbers.length; i++) {
+
+            int rightSum = 0;
+            int leftSum = 0;
+
+            for (int j = 0; j < i; j++) {
+                leftSum += numbers[j];
+            }
+            for (int l = i + 1; l < numbers.length; l++) {
+                rightSum += numbers[l];
+            }
+            if (leftSum == rightSum) {
+                emptyInput = i + "";
+                break;
+            }
+        }
+        System.out.println(emptyInput);
+    }
+}
