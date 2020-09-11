@@ -1,0 +1,27 @@
+package src;
+
+import java.util.Scanner;
+
+public class FactorialDivision {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int n1 = Integer.parseInt(scanner.nextLine());
+        int n2 = Integer.parseInt(scanner.nextLine());
+
+        long firstFact = getFactorial(n1);
+        long secondFact = getFactorial(n2);
+
+        double total = firstFact / (secondFact * 1.00);
+        System.out.printf("%.2f", total);
+
+    }
+
+    static long getFactorial(int num) {
+        long fact = 1;
+        for (int i = 2; i <= num; i++) {
+            fact *= i;
+        }
+        return fact;
+    }
+}
