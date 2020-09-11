@@ -1,0 +1,27 @@
+package src;
+
+import java.util.Scanner;
+
+public class ExtractPersonInformation {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int num = Integer.parseInt(scanner.nextLine());
+        while (num-- > 0) {
+
+            String input = scanner.nextLine();
+            StringBuilder sb = new StringBuilder();
+            sb.append(input);
+
+            int name = sb.indexOf("@");
+            int endName = sb.indexOf("|");
+            String person = sb.substring(name + 1, endName);
+
+            int startIndex = sb.indexOf("#");
+            int endIndex = sb.indexOf("*");
+            String age = sb.substring(startIndex + 1, endIndex);
+
+            System.out.println(String.format("%s is %s years old.", person, age));
+        }
+    }
+}
