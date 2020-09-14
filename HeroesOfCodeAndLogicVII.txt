@@ -1,0 +1,99 @@
+package src;
+
+import java.util.Map;
+import java.util.Scanner;
+import java.util.TreeMap;
+
+public class HeroesOfCodeAndLogicVII {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int n = Integer.parseInt(scanner.nextLine());
+        Map<String, Integer> heroHP = new TreeMap<>();
+        Map<String, Integer> heroMP = new TreeMap<>();
+
+        while (n-- > 0) {
+            String[] tokens = scanner.nextLine().split("\\s+");
+            String heroName = tokens[0];
+            int hp = Integer.parseInt(tokens[1]);
+            int mp = Integer.parseInt(tokens[2]);
+
+            heroHP.putIfAbsent(heroName, hp);
+            heroMP.putIfAbsent(heroName, mp);
+        }
+        String input = scanner.nextLine();
+
+        while (!"End".equals(input)) {
+            String[] tokens = input.split(" - ");
+            String command = tokens[0];
+            String heroName = tokens[1];
+
+            if ("Heal".equals(command)) {
+                int amount = Integer.parseInt(tokens[2]);
+                int sumHP = heroHP.get(heroName);
+
+                if ((sumHP + amount) > 100) {
+                    heroHP.put(heroName, 100);
+                    System.out.printf("%s healed for %d HP!"
+                            , heroName, (100 - (sumHP)));
+                    System.out.println();
+                } else {
+                    heroHP.put(heroName, (sumHP + amount));
+                    System.out.printf("%s healed for %d HP!"
+                            , heroName, (amount));
+                    System.out.println();
+                }
+            } else if ("Recharge".equals(command)) {
+                int amount = Integer.parseInt(tokens[2]);
+                int sumMP = heroMP.get(heroName);
+
+                if (sumMP + amount > 200) {
+                    heroMP.put(heroName, 200);
+                    System.out.printf("%s recharged for %d MP!", heroName, (200 - sumMP));
+                    System.out.println();
+                } else {
+                    heroMP.put(heroName, (amount + (heroMP.get(heroName))));
+                    System.out.printf("%s recharged for %d MP!", heroName, (amount));
+                    System.out.println();
+                }
+            } else if ("CastSpell".equals(command)) {
+                int needMP = Integer.parseInt(tokens[2]);
+                String spellName = tokens[3];
+                int sumMP = heroMP.get(heroName);
+
+                if ((sumMP + needMP) < 200) {
+                    System.out.printf("%s has successfully cast %s and now has %d MP!", heroName, spellName, sumMP - needMP);
+                    System.out.println();
+                } else {
+                    System.out.printf("%s does not have enough MP to cast %s!", heroName, spellName);
+                    System.out.println();
+                }
+            } else if ("TakeDamage".equals(command)) {
+                int damage = Integer.parseInt(tokens[2]);
+                String attacker = tokens[3];
+                int reduceHP = heroHP.get(heroName);
+
+                if ((damage + reduceHP) > 0) {
+                    System.out.printf("%s was hit for %d HP by %s and now has %d HP left!"
+                            , heroName, damage, attacker, reduceHP - damage);
+                    System.out.println();
+                } else {
+                    System.out.printf("%s has been killed by %s!", heroName, attacker);
+                    System.out.println();
+                }
+            }
+            input = scanner.nextLine();
+        }
+        heroHP.entrySet().stream()
+                .sorted((a, b) ->b.getValue().compareTo(a.getValue()))
+                .forEach(entry -> {
+                    String name = entry.getKey();
+                    int HP = entry.getValue();
+                    int MP = heroMP.get((name));
+                    System.out.print(name);
+                    System.out.println();
+                    System.out.printf("  HP: %d%n", HP);
+                    System.out.printf("  MP: %d%n", MP);
+                });
+    }
+}
