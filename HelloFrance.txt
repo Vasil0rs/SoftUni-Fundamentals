@@ -1,0 +1,56 @@
+package src;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class HelloFrance {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        String[] input = scanner.nextLine().split("\\|");
+        double budget = Double.parseDouble(scanner.nextLine());
+        List<Double> list = new ArrayList<>();
+        double profit = 0;
+        double maxPrice = 0;
+        double money = 0;
+
+        for (int i = 0; i < input.length; i++) {
+
+            String[] tokens = input[i].split("->");
+            String type = tokens[0];
+            double price = Double.parseDouble(tokens[1]);
+
+            if ("Clothes".equals(type)) {
+                maxPrice = 50.0;
+
+            } else if ("Shoes".equals(type)) {
+                maxPrice = 35.0;
+
+            } else if ("Accessories".equals(type)) {
+                maxPrice = 20.5;
+
+            }
+            if (budget >= price & price <= maxPrice) {
+                budget -= price;
+                list.add(price * 1.4);
+            }
+        }
+        for (int i = 0; i < list.size(); i++) {
+            budget += list.get(i);
+            money += list.get(i);
+            System.out.printf("%.2f", list.get(i));
+            if (i != list.size() - 1) {
+                System.out.print(" ");
+            }
+        }
+        System.out.println();
+        profit = money - (money / 1.4);
+        System.out.printf("Profit: %.2f%n", profit);
+        if (budget >= 150) {
+            System.out.println("Hello, France!");
+        } else {
+            System.out.println("Time to go.");
+        }
+    }
+}
