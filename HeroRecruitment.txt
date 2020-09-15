@@ -1,0 +1,70 @@
+package src;
+
+import java.util.*;
+
+public class HeroRecruitment {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        String input = scanner.nextLine();
+        Map<String, List<String>> collection = new HashMap<>();
+
+        while (!"End".equals(input)) {
+
+            String[] tokens = input.split("\\s+");
+            String command = tokens[0];
+            String heroName = tokens[1];
+
+            switch (command) {
+                case "Enroll":
+                    if (!collection.containsKey(heroName)) {
+                        collection.putIfAbsent(heroName, new ArrayList<>());
+                    } else {
+                        System.out.printf("%s is already enrolled.%n", heroName);
+                    }
+                    break;
+                case "Learn": {
+                    String spellName = tokens[2];
+                    if (collection.containsKey(heroName)) {
+
+                        if (collection.get(heroName).contains(spellName)) {
+                            System.out.println(String.format("%s has already learnt %s.", heroName, spellName));
+                        } else {
+                            collection.get(heroName).add(spellName);
+                        }
+                    } else {
+                        System.out.println(String.format("%s doesn't exist.", heroName));
+                    }
+                    break;
+                }
+                case "Unlearn": {
+                    String spellName = tokens[2];
+                    if (collection.containsKey(heroName)) {
+                        if (collection.get(heroName).contains(spellName)) {
+                            collection.get(heroName).remove(spellName);
+                        } else {
+                            System.out.println(String.format("%s doesn't know %s.", heroName, spellName));
+                        }
+                    } else {
+                        System.out.println(String.format("%s doesn't exist.", heroName));
+                    }
+                    break;
+                }
+            }
+            input = scanner.nextLine();
+        }
+        System.out.println("Heroes:");
+        collection.entrySet().stream()
+                .sorted((a, b) -> {
+                    int result = Integer.compare(b.getValue().size(), a.getValue().size());
+                    if (result == 0) {
+                        result = a.getKey().compareTo(b.getKey());
+                    }
+                    return result;
+                }).forEach(e -> {
+            System.out.print(String.format("== %s: ", e.getKey()));
+            System.out.println(String.join(" ",e.getValue()));
+        });
+    }
+}
+
