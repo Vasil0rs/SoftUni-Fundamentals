@@ -1,0 +1,59 @@
+package src;
+
+import java.util.Scanner;
+
+public class KaminoFactory {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int n = Integer.parseInt(scanner.nextLine());
+        String input = scanner.nextLine();
+        int[] arr = new int[n];
+
+        int bestCount = 0;
+        int bestIndex = 0;
+        int maxCount=0;
+
+        while (!input.equals("Clone them!")) {
+
+            String[] data = input.split("!+");
+
+            for (int i = 0; i < data.length; i++) {
+                arr[i] = Integer.parseInt(data[i]);
+            }
+
+            for (int currIndex = 0; currIndex < arr.length; currIndex++) {
+
+                int currElement = arr[currIndex];
+                int currCounter = 1;
+
+                if (currElement == 0) {
+                    continue;
+                }
+                for (int index = currIndex + 1; index < arr.length; index++) {
+                    if (arr[index] == 1) {
+                        currCounter++;
+                    } else {
+                        break;
+                    }
+                }
+                if (currCounter > bestCount) {
+                    bestCount = currCounter;
+                    bestIndex = currIndex;
+                }
+            }
+            if (bestCount > maxCount) {
+                maxCount=bestCount;
+            }
+            input = scanner.nextLine();
+        }
+        System.out.printf("Best DNA sample %d with sum: %d.", bestIndex, maxCount);
+        System.out.println();
+        for (int i : arr) {
+            System.out.print(i+" ");
+        }
+
+    }
+
+}
+
