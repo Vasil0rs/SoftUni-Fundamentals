@@ -1,0 +1,56 @@
+package src;
+
+import java.util.*;
+
+public class InboxManager {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        String input = scanner.nextLine();
+        Map<String, List<String>> users = new LinkedHashMap<>();
+
+        while (!"Statistics".equals(input)) {
+
+            String[] tokens = input.split("->");
+            String command = tokens[0];
+            String userName = tokens[1];
+
+
+            if ("Add".equals(command)) {
+                if (!users.containsKey(userName)) {
+                    users.put(userName, new ArrayList<>());
+                } else {
+                    System.out.println(String.format("%s is already registered", userName));
+                }
+            } else if ("Send".equals(command)) {
+                String email = tokens[2];
+                if (users.containsKey(userName)) {
+                    users.get(userName).add(email);
+                }
+            } else if ("Delete".equals(command)) {
+                if (users.containsKey(userName)) {
+                    users.remove(userName);
+                } else {
+                    System.out.println(String.format("%s not found!", userName));
+                }
+            }
+            input = scanner.nextLine();
+        }
+        System.out.println(String.format("Users count: %d", users.size()));
+
+        users.entrySet().stream()
+                .sorted((a, b) -> {
+                    int result = Integer.compare(b.getValue().size(), a.getValue().size());
+                    if (result == 0) {
+                        result = a.getKey().compareTo(b.getKey());
+                    }
+                    return result;
+                }).forEach(e -> {
+            System.out.println(e.getKey());
+            for (String s : e.getValue()) {
+                System.out.println(" - " + s);
+            }
+        });
+    }
+}
+
