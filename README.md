@@ -1,1 +1,1 @@
-# fundamentals-java
+Software-University-Fundamentals-Java
